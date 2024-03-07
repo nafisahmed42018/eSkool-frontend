@@ -5,6 +5,10 @@ import React, { FC, useEffect, useState } from 'react'
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from 'react-icons/hi'
 import NavItems from './nav-items'
 import { ThemeSwitcher } from './theme-switcher'
+import CustomModal from '../modal/custom-modal'
+import Login from '../auth/login'
+import Verification from '../auth/verification'
+import Signup from '../auth/signup'
 
 type Props = {
   open: boolean
@@ -66,14 +70,14 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
                     onClick={() => setOpenSidebar(true)}
                   />
                 </div>
-                {userData ? (
+                {!userData ? (
                   <Link href={'/profile'}>
                     <Image
-                      src={`/vercel.svg`}
+                      src={`/user4.jpg`}
                       alt=""
                       width={30}
                       height={30}
-                      className="w-[30px] h-[30px] rounded-full cursor-pointer"
+                      className="w-[30px] h-[30px] object-fit rounded-full cursor-pointer"
                       style={{
                         border: activeItem === 5 ? '2px solid #37a39a' : 'none',
                       }}
@@ -101,7 +105,7 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
                 {userData?.user ? (
                   <Link href={'/profile'}>
                     <Image
-                      src={`/next.svg`}
+                      src={`/user4.jpg`}
                       alt=""
                       width={30}
                       height={30}
@@ -127,6 +131,47 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
             </div>
           )}
         </div>
+        {route === 'Login' && (
+          <>
+            {open && (
+              <CustomModal
+                open={open}
+                setOpen={setOpen}
+                setRoute={setRoute}
+                activeItem={activeItem}
+                component={Login}
+                // refetch={refetch}
+              />
+            )}
+          </>
+        )}
+        {route === 'Sign-Up' && (
+          <>
+            {open && (
+              <CustomModal
+                open={open}
+                setOpen={setOpen}
+                setRoute={setRoute}
+                activeItem={activeItem}
+                component={Signup}
+              />
+            )}
+          </>
+        )}
+
+        {route === 'Verification' && (
+          <>
+            {open && (
+              <CustomModal
+                open={open}
+                setOpen={setOpen}
+                setRoute={setRoute}
+                activeItem={activeItem}
+                component={Verification}
+              />
+            )}
+          </>
+        )}
       </div>
     </>
   )
