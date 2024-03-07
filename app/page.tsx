@@ -9,7 +9,7 @@ interface Props {}
 const Page: FC<Props> = (props) => {
   const [open, setOpen] = useState(false)
   const [activeItem, setActiveItem] = useState(0)
-  const [route, setRoute] = useState('Verification')
+  const [route, setRoute] = useState('Sign-Up')
 
   return (
     <>
