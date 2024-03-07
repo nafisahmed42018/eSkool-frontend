@@ -60,11 +60,11 @@ const Hero: FC<Props> = (props) => {
           </div>
           <br />
           <br />
-          <div className="1500px:w-[55%] 1100px:w-[78%] w-[90%] flex items-center">
+          <div className="1500px:w-[55%] 1100px:w-[78%] w-[90%] flex items-center ">
             <Image
               src={`/user1.jpg`}
               alt=""
-              className="rounded-full object-cover w-[50px] h-[50px]"
+              className="rounded-full object-cover w-[50px] h-[50px] "
               width={50}
               height={50}
             />

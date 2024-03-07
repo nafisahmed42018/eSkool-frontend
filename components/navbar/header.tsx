@@ -56,7 +56,7 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
                   href={'/'}
                   className={`text-[25px] font-Poppins font-[500] text-black dark:text-white`}
                 >
-                  ELearning
+                  eSkool
                 </Link>
               </div>
               <div className="flex items-center">
@@ -125,7 +125,7 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
                 <br />
                 <br />
                 <p className="text-[16px] px-2 pl-5 text-black dark:text-white">
-                  Copyright © 2023 ELearning
+                  Copyright © 2023 eSkool
                 </p>
               </div>
             </div>
