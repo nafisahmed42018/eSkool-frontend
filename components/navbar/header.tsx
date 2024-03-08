@@ -9,6 +9,11 @@ import CustomModal from '../modal/custom-modal'
 import Login from '../auth/login'
 import Verification from '../auth/verification'
 import Signup from '../auth/signup'
+import { useLoadUserQuery } from '@/redux/features/api/api-slice'
+import { useSession } from 'next-auth/react'
+import { useSocialAuthMutation } from '@/redux/features/auth/auth-api'
+import { toast } from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 
 type Props = {
   open: boolean
@@ -21,7 +26,12 @@ type Props = {
 const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
   const [active, setActive] = useState(false)
   const [openSidebar, setOpenSidebar] = useState(false)
-  const userData: any = {}
+  const [logout, setLogout] = useState(false)
+  const { data: userData, isLoading, refetch } = useLoadUserQuery(undefined, {})
+  const [socialAuth, { isSuccess, error }] = useSocialAuthMutation()
+  const { user } = useSelector((state: any) => state.auth)
+  const data: any = useSession()
+  console.log(data)
 
   if (typeof window !== 'undefined') {
     window.addEventListener('scroll', () => {
@@ -32,6 +42,20 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
       }
     })
   }
+  useEffect(() => {
+    if (!user) {
+      if (data) {
+        socialAuth({
+          email: data?.user?.email,
+          name: data?.user?.name,
+          avatar: data.user?.image,
+        })
+      }
+    }
+    if (isSuccess) {
+      toast.success('Login Successfully')
+    }
+  }, [data, userData, isLoading])
   const handleClose = (e: any) => {
     if (e.target.id === 'screen') {
       {
@@ -70,10 +94,14 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
                     onClick={() => setOpenSidebar(true)}
                   />
                 </div>
-                {!userData ? (
+                {!userData?.data ? (
                   <Link href={'/profile'}>
                     <Image
-                      src={`/user4.jpg`}
+                      src={
+                        userData?.user.avatar
+                          ? userData.user.avatar.url
+                          : `/user4.jpg`
+                      }
                       alt=""
                       width={30}
                       height={30}
@@ -85,7 +113,7 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
                   </Link>
                 ) : (
                   <HiOutlineUserCircle
-                    size={25}
+                    size={30}
                     className="hidden 800px:block cursor-pointer dark:text-white text-black"
                     onClick={() => setOpen(true)}
                   />
@@ -105,7 +133,11 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
                 {userData?.user ? (
                   <Link href={'/profile'}>
                     <Image
-                      src={`/user4.jpg`}
+                      src={
+                        userData?.user.avatar
+                          ? userData.user.avatar.url
+                          : `/user4.jpg`
+                      }
                       alt=""
                       width={30}
                       height={30}
@@ -117,7 +149,7 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
                   </Link>
                 ) : (
                   <HiOutlineUserCircle
-                    size={25}
+                    size={30}
                     className="hidden 800px:block cursor-pointer dark:text-white text-black"
                     onClick={() => setOpen(true)}
                   />
