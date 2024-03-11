@@ -3,7 +3,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 
 interface ProviderProps {
-  children: any
+  children: React.ReactNode
 }
 
 export function StoreProvider({ children }: ProviderProps) {

@@ -45,10 +45,7 @@ export const authApi = apiSlice.injectEndpoints({
       query: ({ email, password }) => ({
         url: 'auth/login',
         method: 'POST',
-        body: {
-          email,
-          password,
-        },
+        body: { email, password },
         credentials: 'include' as const,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
@@ -60,8 +57,8 @@ export const authApi = apiSlice.injectEndpoints({
               user: result.data.user,
             }),
           )
-          // console.log(result)
         } catch (error) {
+          // @ts-ignore
           console.log(error)
         }
       },
@@ -70,11 +67,7 @@ export const authApi = apiSlice.injectEndpoints({
       query: ({ email, name, avatar }) => ({
         url: 'auth/social-auth',
         method: 'POST',
-        body: {
-          email,
-          name,
-          avatar,
-        },
+        body: { email, name, avatar },
         credentials: 'include' as const,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
@@ -87,16 +80,12 @@ export const authApi = apiSlice.injectEndpoints({
             }),
           )
         } catch (error) {
-          // console.log(error)
+          // @ts-ignore
+          console.log(error)
         }
       },
     }),
   }),
 })
 
-export const {
-  useRegisterMutation,
-  useActivationMutation,
-  useLoginMutation,
-  useSocialAuthMutation,
-} = authApi
+export const { useRegisterMutation, useActivationMutation,useSocialAuthMutation } = authApi

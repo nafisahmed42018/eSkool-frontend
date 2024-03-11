@@ -12,7 +12,6 @@ import { toast } from 'react-hot-toast'
 import { styles } from '@/utils/styles'
 import { useLoginMutation } from '@/redux/features/auth/auth-api'
 import { signIn } from 'next-auth/react'
-import { PiPinterestLogo } from 'react-icons/pi'
 
 type Props = {
   setRoute: (route: string) => void
@@ -122,9 +121,7 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
           <FcGoogle
             size={30}
             className="cursor-pointer mr-2"
-            onClick={() => {
-              signIn('google')
-            }}
+            onClick={() => signIn('google')}
           />
           <PiPinterestLogo
             size={30}

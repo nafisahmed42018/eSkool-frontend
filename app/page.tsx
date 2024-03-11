@@ -10,8 +10,7 @@ interface Props {}
 const Page: FC<Props> = (props) => {
   const [open, setOpen] = useState(false)
   const [activeItem, setActiveItem] = useState(0)
-  const data = useSession()
-  const [route, setRoute] = useState('')
+  const [route, setRoute] = useState('Login')
 
   useEffect(() => {
     if (data.status !== 'authenticated') {
