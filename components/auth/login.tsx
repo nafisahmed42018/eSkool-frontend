@@ -10,6 +10,8 @@ import {
 import { FcGoogle } from 'react-icons/fc'
 import { toast } from 'react-hot-toast'
 import { styles } from '@/utils/styles'
+import { useLoginMutation } from '@/redux/features/auth/auth-api'
+import { signIn } from 'next-auth/react'
 
 type Props = {
   setRoute: (route: string) => void
@@ -26,28 +28,28 @@ const schema = Yup.object().shape({
 
 const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
   const [show, setShow] = useState(false)
-  //   const [login, { isSuccess, error }] = useLoginMutation()
+  const [login, { isSuccess, error }] = useLoginMutation()
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: schema,
     onSubmit: async ({ email, password }) => {
-      //   await login({ email, password })
+      await login({ email, password })
     },
   })
 
-  //   useEffect(() => {
-  //     if (isSuccess) {
-  //       toast.success('Login Successfully!')
-  //       setOpen(false)
-  //       refetch()
-  //     }
-  //     if (error) {
-  //       if ('data' in error) {
-  //         const errorData = error as any
-  //         toast.error(errorData.data.message)
-  //       }
-  //     }
-  //   }, [isSuccess, error])
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('Login Successfully!')
+      setOpen(false)
+      // refetch()
+    }
+    if (error) {
+      if ('data' in error) {
+        const errorData = error as any
+        toast.error(errorData.data.message)
+      }
+    }
+  }, [isSuccess, error])
 
   const { errors, touched, values, handleChange, handleSubmit } = formik
 
@@ -119,7 +121,7 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
           <FcGoogle
             size={30}
             className="cursor-pointer mr-2"
-            onClick={() => {}}
+            onClick={() => signIn('google')}
           />
           <AiFillGithub
             size={30}

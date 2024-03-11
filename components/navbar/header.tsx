@@ -9,6 +9,10 @@ import CustomModal from '../modal/custom-modal'
 import Login from '../auth/login'
 import Verification from '../auth/verification'
 import Signup from '../auth/signup'
+import { useSelector } from 'react-redux'
+import { useSession } from 'next-auth/react'
+import { useSocialAuthMutation } from '@/redux/features/auth/auth-api'
+import toast from 'react-hot-toast'
 
 type Props = {
   open: boolean
@@ -21,7 +25,34 @@ type Props = {
 const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
   const [active, setActive] = useState(false)
   const [openSidebar, setOpenSidebar] = useState(false)
-  const userData: any = {}
+  const { user } = useSelector((state: any) => state.auth)
+  const { data } = useSession()
+  // const { data: userData, isLoading, refetch } = useLoadUserQuery(undefined, {})
+  const [socialAuth, { isSuccess, error }] = useSocialAuthMutation()
+  const [logout, setLogout] = useState(false)
+  //  onst {} = useLogOutQuery(undefined, {
+  //     skip: !logout ? true : false,
+  //   }) c
+
+  useEffect(() => {
+    if (!user) {
+      if (data) {
+        socialAuth({
+          email: data?.user?.email,
+          name: data?.user?.name,
+          avatar: data.user?.image,
+        })
+      }
+      if (data === null) {
+        if (isSuccess) {
+          toast.success('Login Successfully')
+        }
+      }
+      // if (data === null && !isLoading && !userData) {
+      //   setLogout(true)
+      // }
+    }
+  }, [data, user])
 
   if (typeof window !== 'undefined') {
     window.addEventListener('scroll', () => {
@@ -70,7 +101,7 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
                     onClick={() => setOpenSidebar(true)}
                   />
                 </div>
-                {!userData ? (
+                {user ? (
                   <Link href={'/profile'}>
                     <Image
                       src={`/user4.jpg`}
@@ -85,7 +116,7 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
                   </Link>
                 ) : (
                   <HiOutlineUserCircle
-                    size={25}
+                    size={30}
                     className="hidden 800px:block cursor-pointer dark:text-white text-black"
                     onClick={() => setOpen(true)}
                   />
@@ -102,7 +133,7 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
             >
               <div className="w-[70%] fixed z-[999999999] h-screen bg-white dark:bg-slate-900 dark:bg-opacity-90 top-0 right-0">
                 <NavItems activeItem={activeItem} isMobile={true} />
-                {userData?.user ? (
+                {user ? (
                   <Link href={'/profile'}>
                     <Image
                       src={`/user4.jpg`}
