@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux'
 import { useSession } from 'next-auth/react'
 import { useSocialAuthMutation } from '@/redux/features/auth/auth-api'
 import toast from 'react-hot-toast'
+import { useLoadUserQuery } from '@/redux/features/api/api-slice'
 
 type Props = {
   open: boolean
@@ -27,7 +28,7 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
   const [openSidebar, setOpenSidebar] = useState(false)
   const { user } = useSelector((state: any) => state.auth)
   const { data } = useSession()
-  // const { data: userData, isLoading, refetch } = useLoadUserQuery(undefined, {})
+  const { data: userData, isLoading, refetch } = useLoadUserQuery(undefined, {})
   const [socialAuth, { isSuccess, error }] = useSocialAuthMutation()
   const [logout, setLogout] = useState(false)
   //  onst {} = useLogOutQuery(undefined, {
@@ -35,24 +36,27 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
   //   }) c
 
   useEffect(() => {
-    if (!user) {
-      if (data) {
-        socialAuth({
-          email: data?.user?.email,
-          name: data?.user?.name,
-          avatar: data.user?.image,
-        })
-      }
-      if (data === null) {
-        if (isSuccess) {
-          toast.success('Login Successfully')
+    if(!isLoading){
+      if (!userData) {
+        if (data) {
+          socialAuth({
+            email: data?.user?.email,
+            name: data?.user?.name,
+            avatar: data.user?.image,
+          });
+          refetch();
         }
       }
-      // if (data === null && !isLoading && !userData) {
-      //   setLogout(true)
-      // }
+      if(data === null){
+        if(isSuccess){
+          toast.success("Login Successfully");
+        }
+      }
+      if(data === null && !isLoading && !userData){
+          setLogout(true);
+      }
     }
-  }, [data, user])
+  }, [data, userData,isLoading]);
 
   if (typeof window !== 'undefined') {
     window.addEventListener('scroll', () => {
@@ -63,20 +67,7 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
       }
     })
   }
-  useEffect(() => {
-    if (!user) {
-      if (data) {
-        socialAuth({
-          email: data?.user?.email,
-          name: data?.user?.name,
-          avatar: data.user?.image,
-        })
-      }
-    }
-    if (isSuccess) {
-      toast.success('Login Successfully')
-    }
-  }, [data, userData, isLoading])
+
   const handleClose = (e: any) => {
     if (e.target.id === 'screen') {
       {

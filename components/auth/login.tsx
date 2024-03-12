@@ -12,6 +12,7 @@ import { toast } from 'react-hot-toast'
 import { styles } from '@/utils/styles'
 import { useLoginMutation } from '@/redux/features/auth/auth-api'
 import { signIn } from 'next-auth/react'
+import { PiPinterestLogo } from 'react-icons/pi'
 
 type Props = {
   setRoute: (route: string) => void

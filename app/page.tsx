@@ -12,11 +12,6 @@ const Page: FC<Props> = (props) => {
   const [activeItem, setActiveItem] = useState(0)
   const [route, setRoute] = useState('Login')
 
-  useEffect(() => {
-    if (data.status !== 'authenticated') {
-      setRoute('Login')
-    }
-  }, [data])
   return (
     <>
       <Header

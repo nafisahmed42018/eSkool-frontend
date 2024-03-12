@@ -36,7 +36,7 @@ export default function RootLayout({
         <StoreProvider>
           <SessionProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <UserLogged>{children}</UserLogged>
+              {children}
               <Toaster position="top-center" reverseOrder={false} />
             </ThemeProvider>
           </SessionProvider>
@@ -44,9 +44,4 @@ export default function RootLayout({
       </body>
     </html>
   )
-}
-const UserLogged: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isLoading } = useLoadUserQuery({})
-
-  return <>{isLoading ? <Loader /> : <div>{children}</div>}</>
 }
