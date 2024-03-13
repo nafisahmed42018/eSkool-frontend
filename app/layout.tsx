@@ -7,8 +7,6 @@ import { HomeMeta } from '@/meta/home-meta'
 import { StoreProvider } from './provider'
 import { Toaster } from 'react-hot-toast'
 import { SessionProvider } from 'next-auth/react'
-import Loader from '@/components/loader/loader'
-import { useLoadUserQuery } from '@/redux/features/api/api-slice'
 const inter = Inter({ subsets: ['latin'] })
 const poppins = Poppins({
   subsets: ['latin'],
