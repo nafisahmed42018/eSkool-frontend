@@ -96,7 +96,7 @@ export const authApi = apiSlice.injectEndpoints({
           dispatch(userLoggedOut())
         } catch (error) {
           // @ts-ignore
-          console.log(error)
+          // console.log(error)
         }
       },
     }),

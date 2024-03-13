@@ -30,9 +30,8 @@ type Props = {
 const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
   const [active, setActive] = useState(false)
   const [openSidebar, setOpenSidebar] = useState(false)
-  const { user } = useSelector((state: any) => state.auth)
-  const { data } = useSession()
   const { data: userData, isLoading, refetch } = useLoadUserQuery(undefined, {})
+  const { data } = useSession()
   const [socialAuth, { isSuccess, error }] = useSocialAuthMutation()
   const [logout, setLogout] = useState(false)
   const {} = useLogOutQuery(undefined, {
@@ -113,7 +112,7 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
                       onClick={() => setOpenSidebar(true)}
                     />
                   </div>
-                  {user ? (
+                  {userData ? (
                     <Link href={'/profile'}>
                       <Image
                         src={
@@ -150,7 +149,7 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
               >
                 <div className="w-[70%] fixed z-[999999999] h-screen bg-white dark:bg-slate-900 dark:bg-opacity-90 top-0 right-0">
                   <NavItems activeItem={activeItem} isMobile={true} />
-                  {user ? (
+                  {userData ? (
                     <Link href={'/profile'}>
                       <Image
                         src={
@@ -193,7 +192,7 @@ const Header = ({ activeItem, setOpen, route, open, setRoute }: Props) => {
                   setRoute={setRoute}
                   activeItem={activeItem}
                   component={Login}
-                  // refetch={refetch}
+                  refetch={refetch}
                 />
               )}
             </>
